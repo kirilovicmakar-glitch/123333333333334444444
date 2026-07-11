@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>серий малий транс  UA — Цілодобовий Сервіс</title>
+    <style>
+        /* --- КУСТОМНІ ЗМІННІ ТА КОЛЬОРИ (LUXURY COBALT & GOLD) --- */
+        :root {
+            --bg-deep: #0a0f1d;
+            --bg-gradient: linear-gradient(135deg, #0a0f1d 0%, #070a14 100%);
+            --bg-card: rgba(16, 24, 48, 0.6);
+            --gold-light: #f6e0a4;
+            --gold-main: #d4af37;
+            --gold-dark: #aa841b;
+            --text-light: #f1f5f9;
+            --text-muted: #64748b;
+            --glass-border: rgba(212, 175, 55, 0.15);
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* АНІМАЦІЯ ПРИ СКРОЛІ (ПЛАВНЕ ВИПЛИВАННЯ) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            filter: blur(10px);
+            transition: var(--transition-smooth);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* --- ШАПКА САЙТУ --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 8%;
+            background: rgba(10, 15, 29, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--gold-main);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        nav {
+            display: flex;
+            gap: 35px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold-light);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold-main);
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        .btn-gold-phone {
+            background: linear-gradient(135deg, var(--gold-main), var(--gold-dark));
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-gold-phone:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* --- СИСТЕМА СТОРІНОК --- */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 140px 8% 80px 8%;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        /* --- СТОРІНКА 1: ДОВГА ГОЛОВНА СТОРІНКА --- */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 70vh;
+            margin-bottom: 100px;
+        }
+
+        .hero-text h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 25px;
+        }
+
+        .hero-text h1 span {
+            background: linear-gradient(to right, var(--gold-light), var(--gold-main));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 19px;
+            margin-bottom: 35px;
+            max-width: 600px;
+        }
+
+        /* Форма люкс класу */
+        .lux-form {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .lux-form h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 15px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold-light);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .field-group input, .field-group select {
+            width: 100%;
+            padding: 14px;
+            background: rgba(7, 10, 20, 0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            transition: var(--transition-smooth);
+        }
+
+        .field-group input:focus, .field-group select:focus {
+            border-color: var(--gold-main);
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        /* БЛОК 2 НА ГОЛОВНІЙ: ЦИФРИ (ЕФЕКТ ЗБІЛЬШЕННЯ) */
+        .stats-section {
+            margin-bottom: 140px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.1);
+            background: rgba(16, 24, 48, 0.9);
+        }
+
+        .stat-card h2 {
+            font-size: 48px;
+            color: var(--gold-main);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        /* БЛОК 3 НА ГОЛОВНІЙ: ГАРАНТІЯ БЕЗПЕКИ */
+        .safety-section {
+            margin-bottom: 140px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            letter-spacing: 1px;
+        }
+
+        .section-header h2 span {
+            color: var(--gold-main);
+        }
+
+        .safety-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .safety-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .safety-icon {
+            font-size: 45px;
+            margin-bottom: 20px;
+            color: var(--gold-main);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* БЛОК 4 НА ГОЛОВНІЙ: ІНТЕРАКТИВНИЙ FAQ */
+        .faq-section {
+            max-width: 900px;
+            margin: 0 auto 100px auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-bottom: 15px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 22px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-question:hover {
+            background: rgba(255,255,255,0.02);
+            color: var(--gold-light);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 30px;
+            color: var(--text-muted);
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .faq-item.open .faq-answer {
+            padding-bottom: 22px;
+            max-height: 200px;
+        }
+
+        /* --- СТОРІНКА 2: ТАРИФИ --- */
+        .grid-lux-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        /* --- СТОРІНКА 3: АВТОПАРК --- */
+        .fleet-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* --- АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ --- */
+        @media (max-width: 968px) {
+            header { padding: 20px 4%; flex-direction: column; gap: 15px; }
+            nav { gap: 20px; }
+            .hero-section { grid-template-columns: 1fr; gap: 40px; }
+            .stats-grid, .safety-grid { grid-template-columns: 1fr; }
+            .page { padding-top: 220px; }
+            .hero-text h1 { font-size: 38px; text-align: center; }
+            .hero-text p { text-align: center; margin: 0 auto 30px auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ПРЕМІУМ ШАПКА -->
+    <header>
+        <div class="logo">👑 Серий<span>малий</span></div>
+        <nav>
+            <a onclick="switchPage('home')" id="nav-home" class="active">Головна</a>
+            <a onclick="switchPage('tariffs')" id="nav-tariffs">Тарифи</a>
+            <a onclick="switchPage('fleet')" id="nav-fleet">Наш Парк</a>
+            <a onclick="switchPage('contacts')" id="nav-contacts">Контакти</a>
+        </nav>
+        <a href="tel:+380000000000" class="btn-gold-phone">📞 Терміновий Виклик</a>
+    </header>
+
+    <!-- ================= ГОЛОВНА СТОРІНКА (ДОВГА ТА ІНТЕРАКТИВНА) ================= -->
+    <div id="home" class="page active-page">
+        
+        <!-- Блок 1: Перший екран -->
+        <section class="hero-section">
+            <div class="hero-text">
+                <h1>Елітний сервіс автоевакуації <span>по всій Україні</span></h1>
+                <p>Евакуація преміум-класу без компромісів. Цілодобове професійне транспортування спорткарів, позашляховиків та спецтехніки у будь-який регіон.</p>
+                <div style="display: flex; gap: 30px;">
+                    <div>
+                        <h3 style="color: var(--gold-main); font-size: 28px;">20 хв</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); text-transform: uppercase;">Швидкість подачі</p>
+                    </div>
+                    <div style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                    <div>
+                        <h3 style="color: var(--gold-main); font-size: 28px;">100%</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); text-transform: uppercase;">Гарантія безпеки</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lux-form">
+                <h3>Миттєвий розрахунок</h3>
+                <div class="field-group">
+                    <label>Місце відправлення</label>
+                    <input type="text" placeholder="Звідки забрати авто?">
+                </div>
+                <div class="field-group">
+                    <label>Місце доставки</label>
+                    <input type="text" placeholder="Куди везти?">
+                </div>
+                <div class="field-group">
+                    <label>Клас автомобіля</label>
+                    <select>
+                        <option>Легковий (Служба Еліт)</option>
+                        <option>Позашляховик / Кросовер</option>
+                        <option>Спорткар / Низький кліренс</option>
+                    </select>
+                </div>
+                <button class="btn-gold-phone" style="width: 100%; border: none; cursor: pointer; margin-top: 10px;" onclick="alert('Заявку прийнято! Диспетчер зв\'яжеться з вами.')">Прорахувати вартість</button>
+            </div>
+        </section>
+
+        <!-- Блок 2: Переваги у цифрах (Поява при скролі) -->
+        <section class="stats-section reveal">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h2>15+</h2>
+                    <p style="color: var(--gold-light); font-weight: bold; margin-bottom: 5px;">Років на ринку</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Бездоганний досвід та тисячі задоволених клієнтів.</p>
+                </div>
+                <div class="stat-card">
+                    <h2>24/7</h2>
+                    <p style="color: var(--gold-light); font-weight: bold; margin-bottom: 5px;">Повна готовність</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Жодних свят чи вихідних. Виїжджаємо за 1 хвилину.</p>
+                </div>
+                <div class="stat-card">
+                    <h2>50+</h2>
+                    <p style="color: var(--gold-light); font-weight: bold; margin-bottom: 5px;">Одиниць спецтехніки</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Сучасні німецькі евакуатори для будь-яких завдань.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 3: Безпека та Гарантії -->
+        <section class="safety-section reveal">
+            <div class="section-header">
+                <h2>Ваше авто у <span>повній безпеці</span></h2>
+            </div>
+            <div class="safety-grid">
+                <div class="safety-card">
+                    <div class="safety-icon">🛡️</div>
+                    <h3 style="margin-bottom: 10px;">Повне страхування</h3>
+                    <p style="color: var(--text-muted); font-size: 15px;">Ми повністю страхуємо автомобіль на час транспортування, несучи 100% фінансову відповідальність.</p>
+                </div>
+                <div class="safety-card">
+                    <div class="safety-icon">🛰️</div>
+                    <h3 style="margin-bottom: 10px;">GPS-Моніторинг</h3>
+                    <p style="color: var(--text-muted); font-size: 15px;">Ви отримуєте онлайн-посилання для відстеження переміщення евакуатора з вашим авто в реальному часі.</p>
+                </div>
+                <div class="safety-card">
+                    <div class="safety-icon">👨‍✈️</div>
+                    <h3 style="margin-bottom: 10px;">Сертифіковані водії</h3>
+                    <p style="color: var(--text-muted); font-size: 15px;">Наші спеціалісти мають стаж роботи понад 7 років та проходять регулярні щомісячні інструктажі.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 4: Інтерактивний FAQ (Питання/Відповіді) -->
+        <section class="faq-section reveal">
+            <div class="section-header">
+                <h2>Часті <span>Запитання</span></h2>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Як швидко приїде евакуатор? <span>+</span></div>
+                <div class="faq-answer">У межах великих міст подача триває до 20-30 хвилин завдяки правильному розподілу чергових машин на трасах України.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Які документи потрібні для перевезення? <span>+</span></div>
+                <div class="faq-answer">Необхідно надати техпаспорт на автомобіль (або додаток Дія) та посвідчення особи, що підтверджує право власності або право керування.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Чи можна замовити евакуатор на певну дату? <span>+</span></div>
+                <div class="faq-answer">Так, ви можете зробити попереднє замовлення на будь-який зручний час через нашого оператора чи форму на сайті.</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= СТОРІНКА 2: ТАРИФИ ================= -->
+    <div id="tariffs" class="page">
+        <div class="section-header">
+            <h2>Преміальні <span>Тарифи</span></h2>
+        </div>
+        <div class="grid-lux-cards">
+            <div class="stat-card" style="text-align: left;">
+                <h3 style="color: var(--gold-light); font-size: 22px; margin-bottom: 15px;">Бізнес Клас</h3>
+                <h2 style="font-size: 36px; margin-bottom: 20px;">від 900 грн</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Для седанів, кросоверів та невеликих авто.</p>
+                <a href="tel:+380000000000" class="btn-gold-phone" style="display: block; text-align: center;">Викликати</a>
+            </div>
+            <div class="stat-card" style="text-align: left; border-color: var(--gold-main);">
+                <h3 style="color: var(--gold-main); font-size: 22px; margin-bottom: 15px;">Позашляховики / ТТ</h3>
+                <h2 style="font-size: 36px; margin-bottom: 20px;">від 1300 грн</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Для важких рамних джипів, мінівенів та спецтехніки.</p>
+                <a href="tel:+380000000000" class="btn-gold-phone" style="display: block; text-align: center;">Викликати</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= СТОРІНКА 3: НАШ ПАРК ================= -->
+    <div id="fleet" class="page">
+        <div class="section-header">
+            <h2>Наш <span>Флот Спецтехніки</span></h2>
+        </div>
+        <div class="fleet-container">
+            <div class="stat-card" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="color: var(--gold-light); margin-bottom: 10px;">Гідравлічні платформи Mercedes-Benz</h3>
+                    <p style="color: var(--text-muted);">Призначені для безпечного завантаження суперкарів з критично низьким кліренсом.</p>
+                </div>
+                <span style="color: var(--gold-main); font-weight: bold; border: 1px solid var(--gold-main); padding: 5px 15px; border-radius: 4px;">12 Одиниць</span>
+            </div>
+            <div class="stat-card" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="color: var(--gold-light); margin-bottom: 10px;">Важкі маніпулятори MAN</h3>
+                    <p style="color: var(--text-muted);">Для підняття транспортних засобів зі складних кюветів або після масштабних аварій.</p>
+                </div>
+                <span style="color: var(--gold-main); font-weight: bold; border: 1px solid var(--gold-main); padding: 5px 15px; border-radius: 4px;">6 Одиниць</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= СТОРІНКА 4: КОНТАКТИ ================= -->
+    <div id="contacts" class="page">
+        <div class="section-header">
+            <h2>Цілодобовий <span>Контакт-Центр</span></h2>
+        </div>
+        <div class="stats-grid" style="max-width: 1000px; margin: 0 auto;">
+            <div class="stat-card">
+                <p style="color: var(--gold-main); text-transform: uppercase; font-size: 13px; font-weight: bold;">Телефон</p>
+                <h3 style="margin-top: 10px; font-size: 20px;">+38 (044) 777-77-77</h3>
+            </div>
+            <div class="stat-card">
+                <p style="color: var(--gold-main); text-transform: uppercase; font-size: 13px; font-weight: bold;">Диспетчерська</p>
+                <h3 style="margin-top: 10px; font-size: 20px;">Вся Україна (24/7)</h3>
+            </div>
+            <div class="stat-card">
+                <p style="color: var(--gold-main); text-transform: uppercase; font-size: 13px; font-weight: bold;">Електронна пошта</p>
+                <h3 style="margin-top: 10px; font-size: 20px;">vip@royaltow.ua</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= СКРИПТИ ДЛЯ АНІМАЦІЙ ТА ПЕРЕХОДІВ ================= -->
+    <script>
+        // Перемикання сторінок
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('nav a');
+
+            pages.forEach(p => p.classList.remove('active-page'));
+            navLinks.forEach(l => l.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active-page');
+            document.getElementById('nav-' + pageId).classList.add('active');
+            
+            window.scrollTo(0, 0);
+            triggerScrollReveal(); // Оновлюємо тригери анімації
+        }
+
+        // Інтерактивний FAQ (Акордеон)
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('open');
+            const span = element.querySelector('span');
+            span.textContent = item.classList.contains('open') ? '−' : '+';
+        }
+
+        // Розумна анімація появи при скролі
+        function triggerScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                } else {
+                    reveal.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', triggerScrollReveal);
+        window.addEventListener('load', triggerScrollReveal);
+    </script>
+</body>
+</html>
